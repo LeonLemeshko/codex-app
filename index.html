@@ -1,0 +1,71 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guildmaster Codex</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="xp-counter">XP: 0</div>
+
+  <header>
+    <h1>The Guildmaster's Codex</h1>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+  <button data-panel="journal" onclick="showPanel('journal')">📜 Quest Journal</button>
+  <button data-panel="zones" onclick="showPanel('zones')">🗺️ Campaign Zones</button>
+  <button data-panel="achievements" onclick="showPanel('achievements')">🏅 Achievements</button>
+  <button data-panel="archive" onclick="showPanel('archive')">📚 Lore Archive</button>
+</nav>
+  </header>
+
+  <!-- Journal Section -->
+  <section id="journal" class="codex-panel">
+    <h2>Active and Completed Quests</h2>
+    <!-- Journal content will be injected here -->
+  </section>
+
+  <!-- Zones Section -->
+  <section id="zones" class="codex-panel" style="display:none">
+    <h2>Zone List</h2>
+
+    <nav>
+      <!-- Core zone filter -->
+      <button onclick="filterZone('core')">Core Quests</button>
+
+      <!-- Life zone filter -->
+      <button onclick="filterZone('life')">Personal Journey</button>
+
+      <!-- All zones -->
+      <button onclick="filterZone('all')">All Zones</button>
+
+      <!-- Optional zone-specific buttons -->
+      <button onclick="filterZone('ritual')">Daily Ritual</button>
+      <button onclick="filterZone('quest')">Quest Log</button>
+      <button onclick="filterZone('archive')">Aether Archive</button>
+    </nav>
+
+    <main id="zone-container">
+      <!-- Dynamic zone content will be injected here -->
+    </main>
+  </section>
+
+  <!-- Achievements Section -->
+  <section id="achievements" class="codex-panel" style="display:none">
+    <h2>Lore and Achievements</h2>
+    <!-- Achievements will be shown here -->
+  </section>
+
+  <!-- Add/Edit Section -->
+  <section id="add" class="codex-panel" style="display:none">
+    <h2>Add or Edit Quests and Zones</h2>
+    <!-- Forms for zone and quest input will go here -->
+  </section>
+
+  <!-- Script now loaded as ES module -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

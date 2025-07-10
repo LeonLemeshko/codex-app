@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ritual",
+    "type": "core",
+    "title": "Daily Ritual",
+    "description": "Ground yourself and prepare for the day.",
+    "quests": [
+      {
+        "id": "meditate",
+        "text": "Meditate for 5 minutes",
+        "xp": 10,
+        "completed": false,
+        "active": true,
+        "priority": "daily"
+      },
+      {
+        "id": "hydrate",
+        "text": "Drink a full glass of water",
+        "xp": 5,
+        "completed": false,
+        "active": true,
+        "priority": "daily"
+      }
+    ]
+  },
+  {
+    "id": "quest",
+    "type": "core",
+    "title": "Guild Campaigns",
+    "description": "Track your missions, mark progress, and collect XP.",
+    "quests": [
+      {
+        "id": "read",
+        "text": "Read 5 pages of lore",
+        "xp": 15,
+        "completed": false,
+        "active": true,
+        "priority": "main"
+      },
+      {
+        "id": "code",
+        "text": "Write 20 lines of HTML",
+        "xp": 20,
+        "completed": false,
+        "active": true,
+        "priority": "main"
+      }
+    ]
+  },
+  {
+    "id": "archive",
+    "type": "core",
+    "title": "Aether Archive",
+    "description": "Upload thoughts, dreams, and records to the Guild's memory vault.",
+    "quests": []
+  }
+]

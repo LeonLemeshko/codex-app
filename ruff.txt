@@ -1,0 +1,42 @@
+/codex-app/
+├── index.html
+├── style.css
+├── app.js
+├── /assets/
+│   ├── images/
+│   └── icons/
+├── /data/
+│   ├── zones.json               ← Core quest zones (e.g. Ritual, Quest Log)
+│   ├── lifeZones.json           ← Personal life quests
+│   ├── achievements.json        ← Earnable lore milestones
+│   └── projectZones.json        ← New: Expanded zone summaries (CDC, Banking, etc.)
+├── /components/
+│   ├── zoneCard.js              ← Core zone rendering
+│   ├── progressTracker.js       ← XP + zone progress bars
+│   ├── achievements.js          ← Achievements rendering
+│   └── projectMap.js            ← New: Map-style summary of broader zones
+
+issues: 
+
+When I click on a tab, the outer aspect of the tab needs to stay highlighted as reference 
+for which tab I selected. for example if I click on quest log, i need quest log to stay lit up
+while im in it. 
+
+when i am in daily ritual, I don't want quest log and aether archive summaries 
+populating below just becuase i checked or unchecked a box. and the same thing 
+happens when i am in the quest log tab. I noticed that something of that nature happens in each tab. 
+
+when I click on journal it should only list current active quests, and its fine 
+to list daily repeatable quests such as daily ritual, but quest log doesn't make 
+sense for what it actually entails, its a redundent title and out of place. 
+
+When clicking on the zone tab, only the nav buttons should populate or 
+daily ritual, quest log, and aether archive should be separated by appropriate
+stylized horizontal break lines. its too clutterd still. 
+
+I should be able to select which quests i want to be active and give its 
+level of priority for it to populate in the quest journal tab. 
+
+It also seems as daily ritual should not even need its own tab since it 
+is instantly displayed anyway, or can just be added to quest log. again I am just seeing to much
+redundent behavior and context. 

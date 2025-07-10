@@ -1,0 +1,13 @@
+[
+  {
+  "id": "vvardenfell-verification",
+  "type": "life",
+  "title": "Vvardenfell of Verification",
+  "mainQuest": "Restore eligibility for CDC tuition support by proving rightful employment and delivering Judit’s first wages.",
+  "objectives": {
+    "completed": [],
+    "active": []
+  },
+  "reward": "CDC reactivation, smoother payroll launch, and one step closer to autonomous business operations"
+}
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "codex-constructor",
+    "title": "Codex Constructor",
+    "description": "Built and launched the Guildmaster Codex.",
+    "badge": "🛠️",
+    "requiredXP": 0,
+    "unlocked": false,
+    "requirements": ["setup-complete"]
+  },
+  {
+    "id": "verification-vanguard",
+    "title": "Verification Vanguard",
+    "description": "Completed Vvardenfell of Verification.",
+    "badge": "📜",
+    "requiredXP": 50,
+    "unlocked": false,
+    "requirements": ["vvardenfell-verification.complete"]
+  },
+  {
+    "id": "daily-disciple",
+    "title": "Daily Disciple",
+    "description": "Completed all Daily Ritual quests.",
+    "badge": "🌞",
+    "requiredXP": 15,
+    "unlocked": false,
+    "requirements": ["ritual.meditate", "ritual.hydrate"]
+  }
+]
