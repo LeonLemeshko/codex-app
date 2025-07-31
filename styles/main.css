@@ -1,64 +1,3 @@
-/codex-app/
-├── index.html
-├── style.css
-├── app.js
-├── /assets/
-│   ├── images/
-│   └── icons/
-├── /data/
-│   ├── zones.json               ← Core quest zones (e.g. Ritual, Quest Log)
-│   ├── lifeZones.json           ← Personal life quests
-│   ├── achievements.json        ← Earnable lore milestones
-│   └── projectZones.json        ← New: Expanded zone summaries (CDC, Banking, etc.)
-├── /components/
-│   ├── zoneCard.js              ← Core zone rendering
-│   ├── progressTracker.js       ← XP + zone progress bars
-│   ├── achievements.js          ← Achievements rendering
-│   └── projectMap.js            ← New: Map-style summary of broader zones
-
-
-Data Model for New Quest: 
-
-{
-  id: "questUniqueID",
-  title: "Write 20 lines of HTML", 
-  description: "Practice markup for the Codex layout.",
-  category: "Main Quests",
-  xp: 20,
-  priority: "high",
-  status: "active",
-  zone: "Core",
-  repeatable: false,
-  completed: false
-}
-
-Wire Frame: 
-
-📋 Create New Quest
-
-[ Title ]              ____________________
-[ Description ]        ____________________
-[ Category ]           [ Dropdown: Main, Daily, Guild ]
-[ XP Amount ]          ___ points
-[ Priority ]           [ low | medium | high ]
-[ Status ]             [ active | inactive ]
-[ Repeatable ]         [ checkbox ]
-[ Assign to Zone ]     [ Dropdown: Core, Life, Projects ]
-[ Save Quest ] [ Cancel ]
-
-Once submitted:
-The quest gets appended to the selected zone’s quest array
-Metadata updates in your Journal view
-Optionally saved to localStorage or exported to file
-
-🛠️ Next Coding Steps (We’ll tackle next session)
-Build the form fields in HTML
-Use JS to construct a new quest object from user input
-Inject the new quest into the correct zone structure
-Trigger a re-render to show the updated Journal view
---------------------------------------------------------------------------------------------------
-issues: 
-
 /* Base Typography */
 html {
   font-size: 16px;
@@ -89,22 +28,64 @@ header {
   padding: 0.75rem;
 }
 .tab-nav button {
-  background: none;
-  border: 1px solid #8a6239;
+  background: #23272f;
   color: #f0e6d2;
-  padding: 0.6rem 1.2rem;
+  border: 2px solid transparent;
   border-radius: 6px;
+  padding: 0.7em 1.4em;
   font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-.tab-nav button:hover,
-.tab-nav button.selected {
-  background-color: #8a6239;
-  color: white;
-  border: 2px solid #d4af37;
+  font-family: inherit;
   font-weight: 600;
-  font-size: 1.05rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s, border-color 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+}
+
+.tab-nav button,
+section nav button,
+#archive nav button,
+#lorePanel nav button,
+#loreEditor nav button {
+  min-width: 120px; /* Or smaller if you want */
+  margin: 0 0.2em;
+}
+
+.tab-nav button:hover,
+.tab-nav button.selected,
+.tab-nav button:focus {
+  background: #d4af37;
+  color: #23272f;
+  border-color: #d4af37;
+  box-shadow: 0 2px 8px rgba(212,175,55,0.15);
+}
+.tab-nav button:hover:not(.selected) {
+  background: #353b47;
+  color: #ffe082;
+  border-color: #ffe082;
+}
+.tab-nav button:active {
+  outline: none;
+  box-shadow: 0 2px 8px rgba(212,175,55,0.15);
+}
+
+.tab-nav,
+section nav {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  margin-bottom: 1.5em;
+  flex-wrap: wrap;
+  overflow: visible;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  background: #23232a;
+  border-radius: 8px 8px 0 0;
 }
 
 /* Panels */
@@ -114,21 +95,70 @@ header {
   background-color: #1c1c1c;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  position: relative; /* Ensure stacking context for overlays */
+  z-index: 20; /* Bring panels above other content */
+  pointer-events: auto; /* Always allow interaction */
+  opacity: 1 !important; /* Ensure visible when active */
+  visibility: visible !important;
+  transition: opacity 0.2s, min-height 0.2s;
+  min-height: 400px; /* Adjust as needed for your typical content */
+}
+
+/* Hide inactive panels robustly for all browsers */
+.codex-panel[style*="display: none"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Ensure nav buttons in archive/lore panels are always clickable and above overlays */
+#archive nav button,
+#lorePanel nav button,
+#loreEditor nav button {
+  position: relative;
+  z-index: 30;
+  pointer-events: auto !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Filter Buttons */
-section nav button {
+section nav button,
+#archive nav button,
+#lorePanel nav button,
+#loreEditor nav button {
   margin: 0.3rem;
   padding: 0.5rem 1rem;
   background: #444;
   color: #f0e6d2;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s, color 0.2s, border-color 0.2s;
 }
-section nav button:hover,
-#zones nav button.selected {
+
+section nav button.selected,
+#archive nav button.selected,
+#lorePanel nav button.selected,
+#loreEditor nav button.selected,
+section nav button:focus {
+  background-color: #8a6239;
+  color: white;
+  border-color: #d4af37;
+}
+
+section nav button:hover:not(.selected) {
+  background-color: #353b47;
+  color: #ffe082;
+  border-color: #ffe082;
+}
+
+/* Fix: Ensure archive/lore nav buttons get selected styling */
+#archive nav button.selected,
+#lorePanel nav button.selected,
+#loreEditor nav button.selected {
   background-color: #8a6239;
   color: white;
   border: 2px solid #d4af37;
@@ -261,12 +291,15 @@ button.toggle-active {
   margin-bottom: 0.5rem;
 }
 .zone-card h4 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   font-size: 1.25rem;
   color: #d4af37;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .zone-card h5 {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
   color: #f0e6d2;
@@ -317,10 +350,10 @@ button.toggle-active {
   margin-top: 0.5rem;
 }
 .zone-progress-label {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #d4af37;
-  font-weight: bold;
-  margin-bottom: 0.3rem;
+  font-weight: 500;
+  margin-left: 1rem;
 }
 
 /* Achievements */
@@ -630,10 +663,34 @@ button.toggle-active {
 
 .lore-entry {
   margin-bottom: 1.5em;
-  padding: 1em;
-  background: #fff7e5;
+  padding: 1em 1.2em;
+  background: #232323; /* Dark background */
   border-left: 4px solid #c8a344;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+  color: #f0e6d2; /* Light text */
+  transition: background 0.3s ease;
 }
 
+.tab-nav,
+section nav {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  margin-bottom: 1.5em;
+  flex-wrap: wrap;
+  overflow: visible;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  background: #23232a;
+  border-radius: 8px 8px 0 0;
+}
 
+.tab-nav button,
+section nav button,
+#archive nav button,
+#lorePanel nav button,
+#loreEditor nav button {
+  min-width: 120px; /* Or smaller if you want */
+  margin: 0 0.2em;
+}

@@ -7,19 +7,29 @@
     "quests": [
       {
         "id": "meditate",
-        "text": "Meditate for 5 minutes",
+        "title": "Meditate for 5 minutes",
+        "description": "Begin your day with clarity.",
+        "category": "Daily Rituals",
         "xp": 10,
+        "priority": "daily",
+        "status": "active",
+        "repeatable": true,
         "completed": false,
         "active": true,
-        "priority": "daily"
+        "text": "Meditate for 5 minutes"
       },
       {
         "id": "hydrate",
-        "text": "Drink a full glass of water",
+        "title": "Drink a full glass of water",
+        "description": "Hydrate and center yourself.",
+        "category": "Daily Rituals",
         "xp": 5,
+        "priority": "daily",
+        "status": "active",
+        "repeatable": true,
         "completed": false,
         "active": true,
-        "priority": "daily"
+        "text": "Drink a full glass of water"
       }
     ]
   },
@@ -31,24 +41,34 @@
     "quests": [
       {
         "id": "read",
-        "text": "Read 5 pages of lore",
+        "title": "Read 5 pages of lore",
+        "description": "Absorb wisdom from the archives.",
+        "category": "Guild Campaigns",
         "xp": 15,
+        "priority": "main",
+        "status": "active",
+        "repeatable": false,
         "completed": false,
         "active": true,
-        "priority": "main"
+        "text": "Read 5 pages of lore"
       },
       {
         "id": "code",
-        "text": "Write 20 lines of HTML",
+        "title": "Write 20 lines of HTML",
+        "description": "Craft a digital scroll from scratch.",
+        "category": "Guild Campaigns",
         "xp": 20,
+        "priority": "main",
+        "status": "active",
+        "repeatable": false,
         "completed": false,
         "active": true,
-        "priority": "main"
+        "text": "Write 20 lines of HTML"
       }
     ]
   },
   {
-    "id": "archive",
+    "id": "aether",
     "type": "core",
     "title": "Aether Archive",
     "description": "Upload thoughts, dreams, and records to the Guild's memory vault.",

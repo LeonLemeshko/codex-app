@@ -1,71 +1,181 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Guildmaster Codex</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/codexSandbox.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <script type="module" src="scripts/app.js"></script>
 </head>
 <body>
   <div id="xp-counter">XP: 0</div>
 
   <header>
-    <h1>The Guildmaster's Codex</h1>
+    <div class="codex-logo">
+      <span class="logo-symbol">📘</span>
+      <span class="logo-text">Codex</span>
+    </div>
 
-    <!-- Tab Navigation -->
+    <h1>The Guildmaster's Codex</h1>
     <nav class="tab-nav">
-  <button data-panel="journal" onclick="showPanel('journal')">📜 Quest Journal</button>
-  <button data-panel="zones" onclick="showPanel('zones')">🗺️ Campaign Zones</button>
-  <button data-panel="achievements" onclick="showPanel('achievements')">🏅 Achievements</button>
-  <button data-panel="archive" onclick="showPanel('archive')">📚 Lore Archive</button>
-</nav>
+      <!-- Gameplay Tracking Group -->
+      <div class="nav-group">
+        <button data-panel="journal" onclick="showPanel('journal')">📜 Quest Journal</button>
+        <button data-panel="zones" onclick="showPanel('zones')">🗺️ Campaign Zones</button>
+        <button data-panel="achievements" onclick="showPanel('achievements')">🏅 Achievements</button>
+      </div>
+      <!-- Lore Management Group -->
+      <div class="nav-group">
+        <button data-panel="archive" onclick="showPanel('archive')">📚 Lore Archive</button>
+        <button data-panel="aether" onclick="showPanel('aether')">🌌 Aether Archive</button>
+        <button data-panel="add" onclick="showPanel('add')">🛠️ Add/Edit</button>
+      </div>
+    </nav>
   </header>
 
   <!-- Journal Section -->
   <section id="journal" class="codex-panel">
-    <h2>Active and Completed Quests</h2>
-    <!-- Journal content will be injected here -->
+    <div class="panel-header">
+      <h2>📜 Quest Journal</h2>
+      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+    </div>
+    <!-- Dynamic quest journal will be injected by app.js -->
   </section>
 
   <!-- Zones Section -->
   <section id="zones" class="codex-panel" style="display:none">
-    <h2>Zone List</h2>
-
+    <div class="panel-header">
+      <h2>🗺️ Campaign Zones</h2>
+      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+    </div>
     <nav>
-      <!-- Core zone filter -->
       <button onclick="filterZone('core')">Core Quests</button>
-
-      <!-- Life zone filter -->
       <button onclick="filterZone('life')">Personal Journey</button>
-
-      <!-- All zones -->
       <button onclick="filterZone('all')">All Zones</button>
-
-      <!-- Optional zone-specific buttons -->
       <button onclick="filterZone('ritual')">Daily Ritual</button>
       <button onclick="filterZone('quest')">Quest Log</button>
-      <button onclick="filterZone('archive')">Aether Archive</button>
+      <button onclick="filterZone('aether')">Aether Archive</button>
     </nav>
-
-    <main id="zone-container">
-      <!-- Dynamic zone content will be injected here -->
-    </main>
+    <section id="zone-view">
+      <main id="zone-container"></main>
+    </section>
   </section>
 
   <!-- Achievements Section -->
   <section id="achievements" class="codex-panel" style="display:none">
-    <h2>Lore and Achievements</h2>
-    <!-- Achievements will be shown here -->
+    <div class="panel-header">
+      <h2>🏅 Achievements</h2>
+      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+    </div>
+    <!-- Achievements injected dynamically -->
+  </section>
+
+  <!-- Archive Section -->
+  <section id="archive" class="codex-panel" style="display:none">
+    <div class="panel-header">
+      <h2>📚 Lore Archive</h2>
+      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+    </div>
+    <!-- Lore entries injected dynamically -->
+  </section>
+
+  <!-- Aether Archive Section -->
+  <section id="aether" class="codex-panel" style="display:none">
+    <div class="panel-header">
+      <h2>🌌 Aether Archive</h2>
+      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+    </div>
+    <!-- Aether Archive entries will be injected dynamically -->
+  </section>
+
+  <!-- Lore Section (not in nav, but available for direct add) -->
+  <section id="lore" class="codex-panel" style="display:none">
+    <section id="loreEditor">
+      <h4>Add Lore Entry</h4>
+      <input type="text" id="loreTitle" placeholder="Title" />
+      <textarea id="loreContent" placeholder="Story or notes..."></textarea>
+      <input type="text" id="loreTags" placeholder="Tags (comma-separated)" />
+      <button onclick="addLoreEntry()">📝 Save Lore</button>
+    </section>
   </section>
 
   <!-- Add/Edit Section -->
   <section id="add" class="codex-panel" style="display:none">
-    <h2>Add or Edit Quests and Zones</h2>
-    <!-- Forms for zone and quest input will go here -->
+    <label for="smartInput">Smart Input:</label>
+    <textarea id="smartInput" rows="4" placeholder="Paste or type any quest notes here..."></textarea>
+    <button type="button" onclick="processSmartInput()">🧠 Parse Input</button>
+
+    <!-- 🧠 Suggestion Box -->
+    <div id="smartSuggestions" class="suggestion-box" style="display:none;">
+      <h4>🧠 Suggestions:</h4>
+      <ul id="suggestionList"></ul>
+    </div>
+
+    <form id="questEditorForm">
+      <label for="questTitle">Title:</label>
+      <input type="text" id="questTitle" required />
+
+      <label for="questDescription">Description:</label>
+      <textarea id="questDescription"></textarea>
+
+      <label for="questCategory">Category:</label>
+      <select id="questCategory">
+        <option value="Daily Rituals">Daily Rituals</option>
+        <option value="Guild Campaigns">Guild Campaigns</option>
+        <option value="Main Quests">Main Quests</option>
+      </select>
+
+      <label for="questXP">XP Amount:</label>
+      <input type="number" id="questXP" min="0" step="5" />
+
+      <label for="questPriority">Priority:</label>
+      <select id="questPriority">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <label for="questStatus">Status:</label>
+      <select id="questStatus">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+
+      <label>
+        <input type="checkbox" id="questRepeatable" />
+        Repeatable
+      </label>
+
+      <label for="questZone">Assign to Zone:</label>
+      <select id="questZone">
+        <option value="Core">Core</option>
+        <option value="Life">Life</option>
+        <option value="Projects">Projects</option>
+      </select>
+
+      <button type="submit">Save Quest</button>
+      <button type="button" onclick="clearQuestForm()">Cancel</button>
+    </form>
+
+    <!-- 🔍 Preview Box -->
+    <div id="questPreview" class="quest-preview" style="display:none;">
+      <h4>🔍 Preview:</h4>
+      <div class="quest-card">
+        <strong class="quest-title" id="previewTitle"></strong>
+        <p class="desc" id="previewDescription"></p>
+        <div class="quest-controls">
+          <span class="priority" id="previewPriority"></span>
+          <span id="previewXP"></span>
+          <span id="previewZone"></span>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- Script now loaded as ES module -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
