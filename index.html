@@ -57,7 +57,7 @@
       <button onclick="filterZone('life')">Personal Journey</button>
       <button onclick="filterZone('all')">All Zones</button>
       <button onclick="filterZone('ritual')">Daily Ritual</button>
-      <button onclick="filterZone('quest')">Quest Log</button>
+      <button onclick="filterZone('guild')">Guild Campaigns</button>
       <button onclick="filterZone('aether')">Aether Archive</button>
     </nav>
     <section id="zone-view">
@@ -122,11 +122,20 @@
       <label for="questDescription">Description:</label>
       <textarea id="questDescription"></textarea>
 
-      <label for="questCategory">Category:</label>
+      <label for="categoryGroup">Category Group:</label>
+      <select id="categoryGroup" onchange="updateSubcategories()">
+        <option value="">Select Group...</option>
+        <option value="Quest Journal">Quest Journal</option>
+        <option value="Campaign Zones">Campaign Zones</option>
+        <option value="Achievements">Achievements</option>
+        <option value="Lore Archive">Lore Archive</option>
+        <option value="Aether Archive">Aether Archive</option>
+      </select>
+
+      <label for="questCategory">Subcategory:</label>
       <select id="questCategory">
-        <option value="Daily Rituals">Daily Rituals</option>
-        <option value="Guild Campaigns">Guild Campaigns</option>
-        <option value="Main Quests">Main Quests</option>
+        <option value="">Select Subcategory...</option>
+        <!-- Options will be populated by JS -->
       </select>
 
       <label for="questXP">XP Amount:</label>
@@ -149,13 +158,6 @@
         <input type="checkbox" id="questRepeatable" />
         Repeatable
       </label>
-
-      <label for="questZone">Assign to Zone:</label>
-      <select id="questZone">
-        <option value="Core">Core</option>
-        <option value="Life">Life</option>
-        <option value="Projects">Projects</option>
-      </select>
 
       <button type="submit">Save Quest</button>
       <button type="button" onclick="clearQuestForm()">Cancel</button>

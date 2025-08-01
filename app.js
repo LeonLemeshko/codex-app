@@ -36,6 +36,7 @@ function renderJournal() {
   allZones.forEach(zone => {
     const activeQuests = zone.quests.filter(q => q.active && !q.completed);
     const completedQuests = zone.quests.filter(q => q.completed);
+    const inactiveQuests = zone.quests.filter(q => !q.active && !q.completed);
 
     if (activeQuests.length === 0 && completedQuests.length === 0) return;
 
@@ -64,6 +65,21 @@ function renderJournal() {
       `;
       zoneBlock.appendChild(questCard);
     });
+
+    // Inactive quests
+inactiveQuests.forEach(q => {
+  const questCard = document.createElement('div');
+  questCard.className = 'quest-card inactive';
+  questCard.innerHTML = `
+    <strong>${q.title}</strong>
+    <p>${q.description}</p>
+    <p>XP: ${q.xp}</p>
+    <button onclick="editQuest('${zone.id}', '${q.id}')">✏️ Edit</button>
+    <button onclick="toggleActive('${zone.id}', '${q.id}')">✅ Activate</button>
+    <button onclick="deleteQuest('${zone.id}', '${q.id}')">🗑️ Delete</button>
+  `;
+  zoneBlock.appendChild(questCard);
+});
 
     // Completed quests
     completedQuests.forEach(q => {
@@ -204,11 +220,10 @@ document.getElementById('questEditorForm').addEventListener('submit', function (
       quest.priority = document.getElementById('questPriority').value;
       quest.status = document.getElementById('questStatus').value;
       quest.repeatable = document.getElementById('questRepeatable').checked;
-      quest.zone = document.getElementById('questZone').value;
       quest.text = quest.title;
 
       saveToLocal(allZones);
-      showPanel('journal'); // ✅ switched from renderJournal to showPanel
+      showPanel('journal');
       updateXPTracker();
       alert(`✏️ Quest "${quest.title}" updated.`);
       this.reset();
@@ -226,31 +241,31 @@ document.getElementById('questEditorForm').addEventListener('submit', function (
     priority: document.getElementById('questPriority').value,
     status: document.getElementById('questStatus').value,
     repeatable: document.getElementById('questRepeatable').checked,
-    zone: document.getElementById('questZone').value,
     completed: false,
     active: true,
     text: document.getElementById('questTitle').value.trim()
   };
 
-  let zoneObj = allZones.find(z => z.title === newQuest.zone || z.id === newQuest.zone);
-  if (!zoneObj) {
-    zoneObj = {
-      id: newQuest.zone,
-      title: newQuest.zone,
-      type: 'custom',
+  // Assign new quests to a default zone or handle as needed
+  let defaultZone = allZones.find(z => z.title === "General");
+  if (!defaultZone) {
+    defaultZone = {
+      id: "general",
+      title: "General",
+      type: "custom",
       quests: []
     };
-    allZones.push(zoneObj);
+    allZones.push(defaultZone);
   }
 
-  zoneObj.quests.push(newQuest);
+  defaultZone.quests.push(newQuest);
   saveToLocal(allZones);
 
-  renderZones([zoneObj]);
-  showPanel('journal'); // ✅ switched from renderJournal to showPanel
+  renderZones([defaultZone]);
+  showPanel('journal');
   updateXPTracker();
 
-  alert(`✅ Quest "${newQuest.title}" added to ${newQuest.zone} (+${newQuest.xp} XP)`);
+  alert(`✅ Quest "${newQuest.title}" added (+${newQuest.xp} XP)`);
   this.reset();
 });
 
@@ -279,12 +294,6 @@ function processSmartInput() {
     /soon|important/i.test(input) ? 'medium' :
     'low';
 
-  // Zone guessing
-  const zoneFromKeywords =
-    /life|journal|reflection/i.test(input) ? 'Life' :
-    /core|main|path/i.test(input) ? 'Projects' :
-    /project|work|dev/i.test(input) ? 'Projects' : 'Core';
-
   // Category guessing
   let category = 'Main Quests';
   if (/ritual|morning|routine/i.test(input)) category = 'Daily Rituals';
@@ -295,7 +304,7 @@ function processSmartInput() {
   document.getElementById('questDescription').value = lines.slice(1).join(' ') || input;
   document.getElementById('questXP').value = xpValue;
   document.getElementById('questPriority').value = smartPriority;
-  document.getElementById('questZone').value = zoneFromKeywords;
+  // document.getElementById('questZone').value = zoneFromKeywords; // <-- REMOVE THIS LINE
   document.getElementById('questCategory').value = category;
   document.getElementById('questRepeatable').checked = repeatable;
   document.getElementById('questStatus').value = status;
@@ -534,6 +543,17 @@ async function filterZone(zoneId) {
     return renderZones(coreZones);
   }
 
+  // 🟡 Restore this block:
+  if (zoneId === 'guild') {
+    const guildZones = allZones
+      .map(z => ({
+        ...z,
+        quests: z.quests.filter(q => q.category === 'Guild Campaigns')
+      }))
+      .filter(z => z.quests.length > 0);
+    return renderZones(guildZones);
+  }
+
   if (zoneId === 'life') {
     return await loadLifeZones(z => {
       const lifeZones = z.filter(z => z.type === 'life');
@@ -636,8 +656,6 @@ function editQuest(zoneId, questId) {
   document.getElementById('questPriority').value = quest.priority;
   document.getElementById('questStatus').value = quest.status;
   document.getElementById('questRepeatable').checked = quest.repeatable;
-  document.getElementById('questZone').value = quest.zone;
-
   document.getElementById('questEditorForm').dataset.editing = `${zoneId}:${questId}`;
 }
 
@@ -676,3 +694,40 @@ window.saveToLocal = saveToLocal;
 window.editQuest = editQuest;
 window.deleteQuest = deleteQuest;
 window.processSmartInput = processSmartInput;  // 🧠 Smart Input Fix
+
+const subcategories = {
+  "Quest Journal": [
+    { value: "Daily Rituals", label: "Daily Rituals" },
+    { value: "Guild Campaigns", label: "Guild Campaigns" },
+    { value: "Main Quests", label: "Main Quests" },
+    { value: "Personal Journey", label: "Personal Journey" }
+  ],
+  "Campaign Zones": [
+    { value: "Personal Journey", label: "Personal Journey" },
+    { value: "Daily Ritual", label: "Daily Ritual" },
+    { value: "Aether Archive", label: "Aether Archive" }
+  ],
+  "Achievements": [
+    { value: "Achievements", label: "Achievements" }
+  ],
+  "Lore Archive": [
+    { value: "Lore Archive", label: "Lore Archive" }
+  ],
+  "Aether Archive": [
+    { value: "Aether Archive", label: "Aether Archive" }
+  ]
+};
+
+window.updateSubcategories = function() {
+  const group = document.getElementById('categoryGroup').value;
+  const subcat = document.getElementById('questCategory');
+  subcat.innerHTML = '<option value="">Select Subcategory...</option>';
+  if (subcategories[group]) {
+    subcategories[group].forEach(opt => {
+      const option = document.createElement('option');
+      option.value = opt.value;
+      option.textContent = opt.label;
+      subcat.appendChild(option);
+    });
+  }
+};
