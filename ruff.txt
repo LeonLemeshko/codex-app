@@ -57,583 +57,599 @@ Use JS to construct a new quest object from user input
 Inject the new quest into the correct zone structure
 Trigger a re-render to show the updated Journal view
 --------------------------------------------------------------------------------------------------
+Wireframe (Textual)
+
+[ Zone List Panel ]
+-------------------------------------------------
+| Zone Title                [Edit] [Delete/Undo] |
+| Completed: 5 | In Progress: 1 | Upcoming: 4    |
+-------------------------------------------------
+| ...repeat for each zone...                     |
+-------------------------------------------------
+[ Add Zone ]
+
+[ Zone Editor Modal/Panel ]
+-------------------------------------------------
+| Zone Title: [__________________________]       |
+-------------------------------------------------
+| Completed Tasks:                               |
+| - [task 1] [Edit] [Delete] [Move]              |
+| - [task 2] [Edit] [Delete] [Move]              |
+| [Add Completed Task]                           |
+-------------------------------------------------
+| In Progress Tasks:                             |
+| - [task 1] [Edit] [Delete] [Move]              |
+| [Add In Progress Task]                         |
+-------------------------------------------------
+| Upcoming Tasks:                                |
+| - [task 1] [Edit] [Delete] [Move]              |
+| [Add Upcoming Task]                            |
+-------------------------------------------------
+[ Save ] [Cancel ]
+--------------------------------------------------------------------------------------------------
+
+Scaffold: 
+
+JS: Zone CRUD Functions:
+------------------------
+// Load zones from projectZones.json
+function loadZones() { /* ... */ }
+
+// Render zone list panel
+function renderZoneList(zones) { /* ... */ }
+
+// Open zone editor modal/panel
+function openZoneEditor(zoneId) { /* ... */ }
+
+// Add/Edit/Delete zone
+function addZone(zoneData) { /* ... */ }
+function editZone(zoneId, updates) { /* ... */ }
+function deleteZone(zoneId) { /* ... */ }
+function restoreZone(zoneId) { /* ... */ }
+
+// Add/Edit/Delete/Move tasks within a zone
+function addTask(zoneId, status, taskText) { /* ... */ }
+function editTask(zoneId, status, taskIndex, newText) { /* ... */ }
+function deleteTask(zoneId, status, taskIndex) { /* ... */ }
+function moveTask(zoneId, fromStatus, toStatus, taskIndex) { /* ... */ }
+
+// Save changes to projectZones.json (or localStorage for now)
+function saveZones(zones) { /* ... */ }
+
+HTML: Zone CRUD Modal/Panel (example):
+-------------------------------------
+<!-- Zone List Panel -->
+<div id="zoneListPanel">
+  <button onclick="openZoneEditor()">Add Zone</button>
+  <div id="zoneList"></div>
+</div>
+
+<!-- Zone Editor Modal/Panel -->
+<div id="zoneEditorModal" style="display:none;">
+  <input id="zoneTitleInput" type="text" />
+  <div id="completedTasks"></div>
+  <div id="inProgressTasks"></div>
+  <div id="upcomingTasks"></div>
+  <button onclick="saveZone()">Save</button>
+  <button onclick="closeZoneEditor()">Cancel</button>
+</div>
+
+JSON: Zone Structure Example:
+----------------------------
+{
+  "id": "zone-id",
+  "title": "Zone Title",
+  "completed": ["Task 1", "Task 2"],
+  "inProgress": ["Task 3"],
+  "upcoming": ["Task 4", "Task 5"]
+}
+--------------------------------------------------------------------------------------------------
 issues: 
 
-/* Base Typography */
-html {
-  font-size: 16px;
-}
-body {
-  font-family: 'Georgia', serif;
-  background: linear-gradient(to bottom, #111, #222);
-  color: #f0e6d2;
-  margin: 0;
-  padding: 0;
-}
+# 🔧 CODEx Update - Ruff Notes
+# Focus: Full CRUD Implementation + Contextual Routing Fixes + Zone Integration
 
-/* Header */
-header {
-  background-color: #2b2b2b;
-  padding: 1rem;
-  text-align: center;
-  border-bottom: 1px solid #444;
-}
+## Issues to Resolve:
 
-/* Navigation Tabs */
-.tab-nav {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  background: #1c1c1c;
-  padding: 0.75rem;
-}
-.tab-nav button {
-  background: none;
-  border: 1px solid #8a6239;
-  color: #f0e6d2;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-.tab-nav button:hover,
-.tab-nav button.selected {
-  background-color: #8a6239;
-  color: white;
-  border: 2px solid #d4af37;
-  font-weight: 600;
-  font-size: 1.05rem;
-}
+1. Universal CRUD Capabilities
+- [ ] Ensure all panels (Zones, Lore, Achievements, Journal) support: Add, Edit, Soft Delete, Restore.
+- [ ] Deleted content must remain restorable (undo/archive).
+- [ ] Future: Support full app re-entry of all data via Add/Edit UI for QA validation.
 
-/* Panels */
-.codex-panel {
-  margin: 1rem;
-  padding: 1rem;
-  background-color: #1c1c1c;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-}
+2. Panel-Specific Edit Routing
+- [ ] Fix: Clicking "Edit" routes generically to Add/Edit page.
+- [ ] Update: Edit logic must detect content type (Zone, Lore, Achievement, etc.).
+- [ ] Save logic must send content to correct panel — not default everything to Quest Journal.
 
-/* Filter Buttons */
-section nav button {
-  margin: 0.3rem;
-  padding: 0.5rem 1rem;
-  background: #444;
-  color: #f0e6d2;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-section nav button:hover,
-#zones nav button.selected {
-  background-color: #8a6239;
-  color: white;
-  border: 2px solid #d4af37;
-  font-weight: 600;
-}
+3. Zone CRUD Platform
+- [ ] Create standalone Zone Editor Modal/Panel:
+      - Add/Edit/Delete zone entries
+      - Manage zone quests by category (Main, Side, Repeatable)
+      - Track task statuses (Upcoming, In Progress, Completed)
+- [ ] Ensure UI updates and data persistence for zone changes.
 
-/* Quest States */
-.completed {
-  color: #888;
-  text-decoration: line-through;
-  opacity: 0.7;
-  transition: all 0.3s ease;
-}
-.completed:hover {
-  color: #d4af37;
-  text-decoration: none;
-  opacity: 1;
-}
-.active {
-  color: #f0e6d2;
-  font-weight: 500;
-}
+4. Zone → Quest Journal Sync
+- [ ] Selecting a Zone in “All Zones” view should feed its quests into Quest Journal.
+- [ ] Journal entries should be grouped under the zone name for clarity.
 
-/* Quest Cards */
-.quest-list {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0;
-}
-.quest-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  transition: background 0.3s ease;
-}
-.quest-card:hover {
-  background: #333;
-}
-.quest-line {
-  font-size: 0.95rem;
-  line-height: 1.4;
-  word-break: break-word;
-}
-.desc {
-  font-style: italic;
-  color: #bbb;
-  margin: 0.4rem 0;
-}
-.quest-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
+5. Quest Status Logic
+- [ ] Fix: Deactivate currently deletes quests.
+- [ ] Update: Deactivate = “inactive/hiatus,” not deletion.
+- [ ] Inactive quests must remain visible and allow reactivation.
 
-/* Buttons & Selects */
-button,
-select {
-  height: 2.2rem;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid #555;
-  background-color: #2a2a2a;
-  color: #f0e6d2;
-}
-button:hover {
-  background-color: #8a6239;
-  color: white;
-}
-button.toggle-active {
-  background-color: #444;
-  cursor: pointer;
-}
+6. Data Independence
+- [ ] Save logic must respect data type and destination.
+      - Zone data → `zones.json` or localStorage key
+      - Lore → `loreBlocks.json`
+      - Achievements → `achievements.json`
+      - Journal → `questJournal.json`
+- [ ] Avoid cross-panel overwrite of content.
 
-/* Repeatable Tag */
-.repeatable {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-color: #000;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  line-height: 24px;
-  border-radius: 4px;
-  margin-left: 8px;
-}
+## Notes:
+- All existing content must eventually be deleted and re-added manually via UI once CRUD logic is verified.
+- “Zone Maps” section is foundational — each zone acts as a large quest project.
+- “All Zones” visual logic already outlines task status; now ensure selection injects quests properly into journal.
 
-/* Priority Tag */
-.priority {
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  background-color: #444;
-  color: #f0e6d2;
-  border-radius: 4px;
-  text-transform: capitalize;
-  margin-left: 6px;
-}
 
-/* Zone Cards */
-.zone-card,
-.life-zone {
-  background-color: #2a2a2a;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-.life-zone {
-  border-left: 6px solid #8a6239;
-}
-.life-zone h4 {
-  margin-top: 0.75rem;
-  color: #e0cfa0;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.main-quest {
-  font-style: italic;
-  font-size: 1rem;
-  color: #f4dcb2;
-  margin-bottom: 0.5rem;
-}
-.zone-card h4 {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-  color: #d4af37;
-}
-.zone-card h5 {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  color: #f0e6d2;
-  position: relative;
-}
-.zone-card h5::before {
-  content: '';
-  display: block;
-  height: 1px;
-  background-color: #555;
-  margin-bottom: 0.5rem;
-}
-
-/* Reward Box */
-.reward-box {
-  background: #333;
-  padding: 0.75rem;
-  margin-top: 1rem;
-  border-radius: 6px;
-  font-weight: bold;
-  color: #d4af37;
-  border-top: 1px solid #555;
-}
-
-/* Progress Bars */
-.progress-bar {
-  height: 8px;
-  background: #333;
-  border-radius: 4px;
-  margin: 0.5rem 0;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  transition: width 0.4s ease;
-}
-.progress-fill.complete {
-  background: #d4af37;
-}
-.progress-fill.halfway {
-  background: #e2b970;
-}
-.progress-fill.starting {
-  background: #555;
-}
-.zone-progress-wrapper {
-  margin-top: 0.5rem;
-}
-.zone-progress-label {
-  font-size: 0.9rem;
-  color: #d4af37;
-  font-weight: bold;
-  margin-bottom: 0.3rem;
-}
-
-/* Achievements */
-.achievement-card {
-  background: #282828;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-left: 6px solid #8a6239;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
-}
-.achievement-card.unlocked {
-  border-left-color: #d4af37;
-  background: #1f1f1f;
-}
-.badge {
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
-}
-
-/* Section Breaks */
-.zone-break {
-  border-top: 2px solid #555;
-  margin: 2rem 0 1rem;
-  opacity: 0.6;
-  width: 80%;
-}
-.zone-break.glow {
-  border-top: 2px solid #d4af37;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
-  opacity: 0.8;
-}
-
-/* Tags */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-}
-.tag {
-  background: #444;
-  color: #f0e6d2;
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-}
-
-/* Add/Edit Tab */
-#add {
-  padding: 2rem;
-  background-color: #1c1c1c;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  max-width: 600px;
-  margin: 2rem auto;
-}
-#questEditorForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-#questEditorForm label {
-  font-weight: 600;
-  color: #f0e6d2;
-  margin-bottom: 0.3rem;
-}
-#questEditorForm input[type="text"],
-#questEditorForm input[type="number"],
-#questEditorForm textarea,
-#questEditorForm select {
-  padding: 0.6rem;
-  font-size: 0.95rem;
-  border-radius: 6px;
-  border: 1px solid #555;
-  background-color: #2a2a2a;
-  color: #f0e6d2;
-}
-#questEditorForm input[type="checkbox"] {
-  margin-right: 0.5rem;
-}
-#questEditorForm label[for="questRepeatable"] {
-  display: flex;
-  align-items: center;
-}
-#questEditorForm button[type="submit"],
-#questEditorForm button[type="button"] {
-  padding: 0.6rem 1rem;
-  font-size: 0.95rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #8a6239;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-#questEditorForm button[type="button"]:hover {
-  background-color: #a67c52;
-}
-
-/* Utility */
-.fallback {
-  color: #999;
-  font-style: italic;
-  margin-top: 1rem;
-}
-
-/* Responsive Layout */
-@media (max-width: 768px) {
-  .tab-nav {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: stretch;
+allZones.json
+-------------
+[
+  {
+    "id": "cdc-payroll",
+    "title": "CDC Eligibility & Payroll",
+    "type": "core",
+    "description": "Manage all payroll and eligibility tasks for CDC staff, ensuring compliance and timely payments.",
+    "reward": "Payroll system fully operational. Staff paid on time. Compliance achieved.",
+    "completed": [
+      "Judit’s employment formalized",
+      "CDC paperwork submitted and resubmitted",
+      "Memo issued for July 1 Zelle payment",
+      "Patriot Software phased out",
+      "ACH originator setup no longer needed"
+    ],
+    "inProgress": [
+      "Transition to Huntington payroll tools pending final bank visit"
+    ],
+    "upcoming": [
+      "Issue July 1 Zelle payment from personal account",
+      "Submit payment confirmation to MDHHS",
+      "Visit Huntington branch Monday after 4 PM",
+      "Archive employment and payment documentation"
+    ],
+    "quests": [
+      {
+        "id": "quest-cdc-1",
+        "title": "Formalize Judit’s employment",
+        "description": "Complete all paperwork and formalize employment.",
+        "category": "Main Quests",
+        "xp": 10,
+        "priority": "high",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      },
+      {
+        "id": "quest-cdc-2",
+        "title": "Transition to Huntington payroll tools",
+        "description": "Finish the final bank visit and transition payroll.",
+        "category": "Main Quests",
+        "xp": 8,
+        "priority": "medium",
+        "status": "active",
+        "repeatable": false,
+        "completed": false,
+        "active": true
+      }
+    ]
+  },
+  {
+    "id": "banking-infra",
+    "title": "Banking Infrastructure & Access",
+    "type": "core",
+    "description": "Establish and optimize banking infrastructure for business operations.",
+    "reward": "Seamless banking operations and payroll integration.",
+    "completed": [
+      "Opened Huntington business account",
+      "Linked personal checking accounts",
+      "Tested internal transfers",
+      "Company ID no longer required"
+    ],
+    "inProgress": [],
+    "upcoming": [
+      "Activate Huntington payroll tool post-branch visit",
+      "Align payroll schedule with banking deadlines"
+    ],
+    "quests": [
+      {
+        "id": "quest-bank-1",
+        "title": "Open Huntington business account",
+        "description": "Open and link Huntington business account.",
+        "category": "Main Quests",
+        "xp": 7,
+        "priority": "medium",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      },
+      {
+        "id": "quest-bank-2",
+        "title": "Activate payroll tool",
+        "description": "Activate payroll tool after branch visit.",
+        "category": "Main Quests",
+        "xp": 6,
+        "priority": "low",
+        "status": "upcoming",
+        "repeatable": false,
+        "completed": false,
+        "active": false
+      }
+    ]
+  },
+  {
+    "id": "ai-dev",
+    "title": "AI Engineering & Workflow Integration",
+    "type": "core",
+    "description": "Integrate AI tools and workflows for enhanced productivity.",
+    "reward": "Automated workflows and improved efficiency.",
+    "completed": [
+      "Defined AI + frontend dev goals",
+      "Assigned tools: Whisper, PyAutoGUI, OCR, GPT",
+      "Laid framework for multimodal workspace automation"
+    ],
+    "inProgress": [],
+    "upcoming": [
+      "Build modular skill tree",
+      "Map inter-model collaboration",
+      "Expand voice triggers",
+      "Prototype autonomous troubleshooting assistant"
+    ],
+    "quests": [
+      {
+        "id": "quest-ai-1",
+        "title": "Define AI + frontend dev goals",
+        "description": "Set goals for AI and frontend development.",
+        "category": "Guild Campaigns",
+        "xp": 12,
+        "priority": "high",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      },
+      {
+        "id": "quest-ai-2",
+        "title": "Build modular skill tree",
+        "description": "Design and build modular skill tree for AI.",
+        "category": "Guild Campaigns",
+        "xp": 10,
+        "priority": "medium",
+        "status": "upcoming",
+        "repeatable": false,
+        "completed": false,
+        "active": false
+      }
+    ]
+  },
+  {
+    "id": "massage-course",
+    "title": "Advanced Massage Therapy Course (Udemy)",
+    "type": "life",
+    "description": "Develop and launch an advanced massage therapy course.",
+    "reward": "Course ready for launch and promotion.",
+    "completed": [],
+    "inProgress": [
+      "Defined concept for digital course launch"
+    ],
+    "upcoming": [
+      "Finalize topics and objectives",
+      "Set production plan",
+      "Organize content structure",
+      "Draft promo content",
+      "Prep legal/media notes"
+    ],
+    "quests": [
+      {
+        "id": "quest-massage-1",
+        "title": "Define concept for digital course launch",
+        "description": "Define concept and objectives for massage course.",
+        "category": "Personal Journey",
+        "xp": 5,
+        "priority": "medium",
+        "status": "active",
+        "repeatable": false,
+        "completed": false,
+        "active": true
+      },
+      {
+        "id": "quest-massage-2",
+        "title": "Finalize topics and objectives",
+        "description": "Finalize topics and objectives for course.",
+        "category": "Personal Journey",
+        "xp": 4,
+        "priority": "low",
+        "status": "upcoming",
+        "repeatable": false,
+        "completed": false,
+        "active": false
+      }
+    ]
+  },
+  {
+    "id": "meditation-series",
+    "title": "AI Video Meditation Series",
+    "type": "life",
+    "description": "Create a series of AI-powered meditation videos.",
+    "reward": "First meditation series completed and published.",
+    "completed": [
+      "Scoped Judit’s role",
+      "Sorted nature photo archive"
+    ],
+    "inProgress": [],
+    "upcoming": [
+      "Storyboard Series One",
+      "Choose photo sequences",
+      "Generate ambient soundscapes",
+      "Experiment with AI motion overlays"
+    ],
+    "quests": [
+      {
+        "id": "quest-meditation-1",
+        "title": "Scope Judit’s role",
+        "description": "Define Judit’s role in meditation series.",
+        "category": "Personal Journey",
+        "xp": 6,
+        "priority": "medium",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      },
+      {
+        "id": "quest-meditation-2",
+        "title": "Storyboard Series One",
+        "description": "Storyboard the first meditation video series.",
+        "category": "Personal Journey",
+        "xp": 5,
+        "priority": "medium",
+        "status": "upcoming",
+        "repeatable": false,
+        "completed": false,
+        "active": false
+      }
+    ]
   }
-  .quest-line,
-  .quest-actions,
-  .quest-controls {
-    flex-direction: column;
-    align-items: flex-start;
+]
+
+personalJrny.json
+-----------------
+[
+  {
+    "id": "vvardenfell-verification",
+    "type": "life",
+    "title": "Vvardenfell of Verification",
+    "quests": [
+      {
+        "id": "quest-vv-1",
+        "title": "Deliver Judit’s first wages via verified payroll",
+        "description": "Deliver Judit’s first wages using the new payroll system.",
+        "category": "Personal Journey",
+        "xp": 10,
+        "priority": "high",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      },
+      {
+        "id": "quest-vv-2",
+        "title": "Submit employment proof to CDC portal",
+        "description": "Submit proof of employment to the CDC portal.",
+        "category": "Personal Journey",
+        "xp": 8,
+        "priority": "medium",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      },
+      {
+        "id": "quest-vv-3",
+        "title": "Confirm CDC approval and payroll alignment",
+        "description": "Confirm CDC approval and payroll alignment.",
+        "category": "Personal Journey",
+        "xp": 6,
+        "priority": "medium",
+        "status": "completed",
+        "repeatable": false,
+        "completed": true,
+        "active": false
+      }
+    ],
+    "reward": "CDC reactivation achieved. Paychecks now flowing through Huntington business account. Phase two of autonomy initiated."
   }
-  .zone-card,
-  .life-zone,
-  .codex-panel {
-    margin: 0.5rem;
-    padding: 0.75rem;
+]
+
+aetherArch.json
+---------------
+{
+  "entries": [
+    {
+      "title": "The First Flame",
+      "content": "The guild's origin began beneath fractured skies...",
+      "tags": ["origin", "guild"],
+      "date": "2025-07-21"
+    },
+    {
+      "title": "Rise of the Cartographers",
+      "content": "They mapped the forgotten ruins with meticulous ink...",
+      "tags": ["mapping", "exploration"],
+      "date": "2025-07-22"
+    },
+    {
+      "title": "Aether Discovery",
+      "content": "Aether Archive was unlocked after a mysterious event.",
+      "tags": ["aether", "rare"],
+      "date": "2025-08-01"
+    }
+  ]
+}
+
+loreArch.json
+-------------
+{
+  "entries": [
+    {
+      "title": "Guild Reborn",
+      "date": "2025-07-16",
+      "content": "After reconciling zone structures and styling, the Codex shimmered once again with golden parchment and glowing shadows.",
+      "tags": ["Codex", "styling", "breakthrough"]
+    },
+    {
+      "title": "First Quest Saved",
+      "date": "2025-07-15",
+      "content": "The new Quest Editor form successfully pushed dynamic quests into the system and marked the dawn of modular storytelling.",
+      "tags": ["quest-editor", "modularity", "form"]
+    },
+    {
+      "title": "Aether Discovery",
+      "date": "2025-08-01",
+      "content": "Aether Archive was unlocked after a mysterious event.",
+      "tags": ["aether", "rare"]
+    }
+  ]
+}
+
+achievements.json
+-----------------
+[
+  {
+    "id": "first_quest",
+    "title": "First Quest Complete",
+    "description": "Complete your first quest.",
+    "badge": "🎉",
+    "unlockCondition": "first_quest",
+    "unlocked": false
+  },
+  {
+    "id": "xp_50",
+    "title": "XP 50",
+    "description": "Earn 50 XP.",
+    "badge": "🏅",
+    "unlockCondition": "xp_50",
+    "unlocked": false
+  },
+  {
+    "id": "xp_100",
+    "title": "XP 100",
+    "description": "Earn 100 XP.",
+    "badge": "🥇",
+    "unlockCondition": "xp_100",
+    "unlocked": false
+  },
+  {
+    "id": "codex-constructor",
+    "title": "Codex Constructor",
+    "description": "Built and launched the Guildmaster Codex.",
+    "badge": "🛠️",
+    "unlockCondition": "setup_complete",
+    "unlocked": false
+  },
+  {
+    "id": "verification-vanguard",
+    "title": "Verification Vanguard",
+    "description": "Completed Vvardenfell of Verification.",
+    "badge": "📜",
+    "unlockCondition": "vvardenfell_verification",
+    "unlocked": false
+  },
+  {
+    "id": "daily-disciple",
+    "title": "Daily Disciple",
+    "description": "Completed all Daily Ritual quests.",
+    "badge": "🌞",
+    "unlockCondition": "daily_rituals_complete",
+    "unlocked": false
   }
-  button,
-  select,
-  textarea,
-  input {
-    max-width: 100%;
-    font-size: 1rem;
+]
+
+guildCamp.json
+--------------
+[
+  {
+    "id": "ritual",
+    "type": "core",
+    "title": "Daily Ritual",
+    "description": "Ground yourself and prepare for the day.",
+    "quests": [
+      {
+        "id": "meditate",
+        "title": "Meditate for 5 minutes",
+        "description": "Begin your day with clarity.",
+        "category": "Daily Rituals",
+        "xp": 10,
+        "priority": "daily",
+        "status": "active",
+        "repeatable": true,
+        "completed": false,
+        "active": true,
+        "text": "Meditate for 5 minutes"
+      },
+      {
+        "id": "hydrate",
+        "title": "Drink a full glass of water",
+        "description": "Hydrate and center yourself.",
+        "category": "Daily Rituals",
+        "xp": 5,
+        "priority": "daily",
+        "status": "active",
+        "repeatable": true,
+        "completed": false,
+        "active": true,
+        "text": "Drink a full glass of water"
+      }
+    ]
+  },
+  {
+    "id": "quest",
+    "type": "core",
+    "title": "Guild Campaigns",
+    "description": "Track your missions, mark progress, and collect XP.",
+    "quests": [
+      {
+        "id": "read",
+        "title": "Read 5 pages of lore",
+        "description": "Absorb wisdom from the archives.",
+        "category": "Guild Campaigns",
+        "xp": 15,
+        "priority": "main",
+        "status": "active",
+        "repeatable": false,
+        "completed": false,
+        "active": true,
+        "text": "Read 5 pages of lore"
+      },
+      {
+        "id": "code",
+        "title": "Write 20 lines of HTML",
+        "description": "Craft a digital scroll from scratch.",
+        "category": "Guild Campaigns",
+        "xp": 20,
+        "priority": "main",
+        "status": "active",
+        "repeatable": false,
+        "completed": false,
+        "active": true,
+        "text": "Write 20 lines of HTML"
+      }
+    ]
+  },
+  {
+    "id": "aether",
+    "type": "core",
+    "title": "Aether Archive",
+    "description": "Upload thoughts, dreams, and records to the Guild's memory vault.",
+    "quests": []
   }
-}
-
-.zone-progress-label {
-  font-size: 0.85rem;
-  color: #d4af37;
-  font-weight: 500;
-  margin-left: 1rem;
-}
-
-.legend-key {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1rem 0;
-  font-size: 0.85rem;
-  color: #f0e6d2;
-  align-items: center;
-}
-
-.legend-key span {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.status-icon {
-  font-size: 1rem;
-}
-
-.active-icon {
-  color: #4caf50;
-}
-
-.inactive-icon {
-  color: #555;
-}
-
-.codex-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  color: #d4af37;
-  margin-bottom: 0.5rem;
-}
-
-.logo-symbol {
-  font-size: 2rem;
-}
-
-.logo-text {
-  font-family: 'Georgia', serif;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-.zone-card {
-  margin-bottom: 2.5rem;
-  padding: 1.25rem;
-  border-radius: 8px;
-  background-color: #2a2a2a;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.zone-card h4 {
-  margin-bottom: 0.25rem;
-  font-size: 1.25rem;
-  color: #d4af37;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.zone-card h5 {
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  color: #f0e6d2;
-  position: relative;
-}
-
-.zone-card h5::before {
-  content: '';
-  display: block;
-  height: 1px;
-  background-color: #555;
-  margin-bottom: 0.5rem;
-}
-
-.collapsible-header {
-  cursor: pointer;
-  font-weight: bold;
-  position: relative;
-}
-
-.collapsible-header::after {
-  content: '▼';
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  color: #d4af37;
-  transition: transform 0.2s ease;
-}
-
-.quest-list.collapsed {
-  display: none;
-}
-
-.collapsible-header.open::after {
-  transform: rotate(180deg);
-}
-
-#smartInput {
-  width: 100%;
-  font-family: 'Courier New', monospace;
-  background-color: #1e1e1e;
-  color: #f0e6d2;
-  border: 1px solid #555;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  resize: vertical;
-  border-radius: 4px;
-}
-
-#add label[for="smartInput"] {
-  font-weight: bold;
-  color: #d4af37;
-  display: block;
-  margin-top: 1rem;
-}
-
-#add button[onclick="processSmartInput()"] {
-  display: block;
-  margin-left: auto;
-  margin-top: -0.5rem;
-  background-color: #333;
-  color: #d4af37;
-  border: 1px solid #555;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.suggestion-box {
-  background-color: #1c1c1c;
-  border: 1px solid #444;
-  padding: 0.75rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-}
-
-.suggestion-box h4 {
-  color: #d4af37;
-  margin-bottom: 0.5rem;
-}
-
-.suggestion-box ul {
-  list-style: disc;
-  padding-left: 1.25rem;
-  color: #f0e6d2;
-  font-size: 0.95rem;
-}
-
-.suggestion-box li {
-  margin-bottom: 0.3rem;
-}
-
-.quest-card.completed {
-  opacity: 0.6;
-  text-decoration: line-through;
-  background-color: #f0f0f0;
-}
-
-.lore-entry {
-  margin-bottom: 1.5em;
-  padding: 1em;
-  background: #fff7e5;
-  border-left: 4px solid #c8a344;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-
+]

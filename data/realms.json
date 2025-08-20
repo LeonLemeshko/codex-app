@@ -1,0 +1,280 @@
+[
+  {
+    "id": "fatherhood",
+    "title": "Fatherhood",
+    "type": "zone",
+    "description": "Grow as a father and nurture your children.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "fatherhood-core",
+        "title": "Fatherhood Core Goals",
+        "type": "core",
+        "quests": [
+          {
+            "id": "quest-fatherhood-1",
+            "title": "Have a special day with Levi",
+            "description": "Plan and enjoy a day out with Levi.",
+            "category": "Fatherhood",
+            "xp": 10,
+            "priority": "high",
+            "status": "inactive",
+            "repeatable": false,
+            "completed": false,
+            "active": false
+          }
+        ]
+      },
+      {
+        "id": "fatherhood-side",
+        "title": "Fatherhood Side Projects",
+        "type": "side",
+        "quests": []
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "income-career",
+    "title": "Income & Career",
+    "type": "zone",
+    "description": "Advance your career and financial stability.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "career-core",
+        "title": "Career Core Objectives",
+        "type": "core",
+        "quests": [
+          {
+            "id": "quest-income-1",
+            "title": "Update LinkedIn profile",
+            "description": "Refresh your LinkedIn with recent achievements.",
+            "category": "Income & Career",
+            "xp": 4,
+            "priority": "medium",
+            "status": "inactive",
+            "repeatable": false,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "health-fitness",
+    "title": "Health & Fitness",
+    "type": "zone",
+    "description": "Improve physical and mental health.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "health-core",
+        "title": "Health Core Habits",
+        "type": "core",
+        "quests": [
+          {
+            "id": "quest-health-1",
+            "title": "Walk 10,000 steps",
+            "description": "Hit your daily step goal.",
+            "category": "Health & Fitness",
+            "xp": 5,
+            "priority": "medium",
+            "status": "inactive",
+            "repeatable": true,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "yisroel-zone",
+    "title": "Yisroel Alexander Lemeshko (Born 10/31/2017)",
+    "type": "child",
+    "description": "Support Yisroel’s growth, learning, and happiness.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "yisroel-personal",
+        "title": "Yisroel Personal Growth",
+        "type": "personal",
+        "quests": [
+          {
+            "id": "quest-yisroel-1",
+            "title": "Read with Yisroel",
+            "description": "Spend 20 minutes reading together.",
+            "category": "Yisroel",
+            "xp": 3,
+            "priority": "low",
+            "status": "inactive",
+            "repeatable": true,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "hodaya-zone",
+    "title": "Hodaya Roza Lemeshko (Born 11/18/2018)",
+    "type": "child",
+    "description": "Support Hodaya’s growth, learning, and happiness.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "hodaya-personal",
+        "title": "Hodaya Personal Growth",
+        "type": "personal",
+        "quests": [
+          {
+            "id": "quest-hodaya-1",
+            "title": "Draw together",
+            "description": "Spend time drawing and being creative.",
+            "category": "Hodaya",
+            "xp": 2,
+            "priority": "low",
+            "status": "inactive",
+            "repeatable": true,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "zelig-zone",
+    "title": "Zelig Gavriel Lemeshko (Born 10/23/2019)",
+    "type": "child",
+    "description": "Support Zelig’s growth, learning, and happiness.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "zelig-personal",
+        "title": "Zelig Personal Growth",
+        "type": "personal",
+        "quests": [
+          {
+            "id": "quest-zelig-1",
+            "title": "Play outside with Zelig",
+            "description": "Spend time playing outdoors together.",
+            "category": "Zelig",
+            "xp": 2,
+            "priority": "low",
+            "status": "inactive",
+            "repeatable": true,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "refael-zone",
+    "title": "Refael Mordechai Menachem (Born 08/16/2021)",
+    "type": "child",
+    "description": "Support Refael’s growth, learning, and happiness.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "refael-personal",
+        "title": "Refael Personal Growth",
+        "type": "personal",
+        "quests": [
+          {
+            "id": "quest-refael-1",
+            "title": "Sing songs with Refael",
+            "description": "Sing and dance together.",
+            "category": "Refael",
+            "xp": 1,
+            "priority": "low",
+            "status": "inactive",
+            "repeatable": true,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  },
+  {
+    "id": "levi-zone",
+    "title": "Levi Yitzchak (Born 12/11/2022)",
+    "type": "child",
+    "description": "Support Levi’s growth, learning, and happiness.",
+    "active": false,
+    "questLines": [
+      {
+        "id": "levi-personal",
+        "title": "Levi Personal Growth",
+        "type": "personal",
+        "quests": [
+          {
+            "id": "quest-levi-1",
+            "title": "Play peekaboo with Levi",
+            "description": "Play peekaboo and make Levi laugh.",
+            "category": "Levi",
+            "xp": 1,
+            "priority": "low",
+            "status": "inactive",
+            "repeatable": true,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "achievements": [],
+    "progress": {
+      "completed": [],
+      "inProgress": [],
+      "upcoming": []
+    }
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "id": "potty-training",
+    "type": "life",
+    "title": "Potty Training My 3 Year Old",
+    "description": "Help my child transition from diapers to using the toilet independently.",
+    "category": "Personal Goal",
+    "repeatable": false,
+    "active": true,
+    "completed": false,
+    "isQuest": true,
+    "inJournal": false,
+    "objectives": {
+      "active": [
+        { "id": "pt-step1", "title": "Buy training potty", "inJournal": false },
+        { "id": "pt-step2", "title": "Teach child to use potty", "inJournal": false }
+      ],
+      "completed": []
+    }
+  },
+  {
+    "id": "wife-training-regimen",
+    "type": "life",
+    "title": "Start Personal Training Regimen for My Wife",
+    "description": "Help my wife begin a consistent gym routine for health and fitness.",
+    "category": "Personal Goal",
+    "repeatable": true,
+    "active": true,
+    "completed": false,
+    "isQuest": true,
+    "inJournal": false,
+    "objectives": {
+      "active": [
+        { "id": "wtr-step1", "title": "Sign up for gym membership", "inJournal": false },
+        { "id": "wtr-step2", "title": "Create workout schedule", "inJournal": false }
+      ],
+      "completed": []
+    }
+  },
+  {
+    "id": "shul-learning",
+    "type": "life",
+    "title": "Consistent Shul Attendance & Learning",
+    "description": "Attend shul every morning for davening and never miss morning/evening learning with my chavrusa.",
+    "category": "Personal Goal",
+    "repeatable": true,
+    "active": true,
+    "completed": false,
+    "isQuest": true,
+    "inJournal": false,
+    "objectives": {
+      "active": [
+        { "id": "sl-step1", "title": "Attend morning davening", "inJournal": false },
+        { "id": "sl-step2", "title": "Attend evening learning", "inJournal": false }
+      ],
+      "completed": []
+    }
+  },
+  {
+    "id": "weight-lifting-goal",
+    "type": "life",
+    "title": "Reach Weight Lifting Milestone",
+    "description": "Achieve a new personal best in weight lifting.",
+    "category": "Personal Goal",
+    "repeatable": false,
+    "active": true,
+    "completed": false,
+    "isQuest": true,
+    "inJournal": false,
+    "objectives": {
+      "active": [
+        { "id": "wlg-step1", "title": "Increase weight by 5lbs", "inJournal": false },
+        { "id": "wlg-step2", "title": "Track progress for 4 weeks", "inJournal": false }
+      ],
+      "completed": []
+    }
+  }
+]

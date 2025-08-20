@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/codexSandbox.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <script type="module" src="scripts/app.js"></script>
 </head>
 <body>
   <div id="xp-counter">XP: 0</div>
@@ -22,17 +21,14 @@
 
     <h1>The Guildmaster's Codex</h1>
     <nav class="tab-nav">
-      <!-- Gameplay Tracking Group -->
       <div class="nav-group">
-        <button data-panel="journal" onclick="showPanel('journal')">📜 Quest Journal</button>
-        <button data-panel="zones" onclick="showPanel('zones')">🗺️ Campaign Zones</button>
-        <button data-panel="achievements" onclick="showPanel('achievements')">🏅 Achievements</button>
+        <button data-panel="journal" onclick="window.showPanel('journal')">📜 Quest Journal</button>
+        <button data-panel="realms" onclick="window.showPanel('realms')">🗺️ Campaign Zone</button>
+        <button data-panel="achievements" onclick="window.showPanel('achievements')">🏅 Achievements</button>
       </div>
-      <!-- Lore Management Group -->
       <div class="nav-group">
-        <button data-panel="archive" onclick="showPanel('archive')">📚 Lore Archive</button>
-        <button data-panel="aether" onclick="showPanel('aether')">🌌 Aether Archive</button>
-        <button data-panel="add" onclick="showPanel('add')">🛠️ Add/Edit</button>
+        <button data-panel="archive" onclick="window.showPanel('archive')">📚 Lore Archive</button>
+        <button data-panel="add" onclick="window.showPanel('add')">🛠️ Add/Edit</button>
       </div>
     </nav>
   </header>
@@ -41,27 +37,35 @@
   <section id="journal" class="codex-panel">
     <div class="panel-header">
       <h2>📜 Quest Journal</h2>
-      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+      <button class="edit-btn" onclick="window.showPanel('add')">Edit</button>
     </div>
     <!-- Dynamic quest journal will be injected by app.js -->
   </section>
 
-  <!-- Zones Section -->
-  <section id="zones" class="codex-panel" style="display:none">
-    <div class="panel-header">
-      <h2>🗺️ Campaign Zones</h2>
-      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+  <!-- Realms Section (now acts as Campaign Zone panel) -->
+  <section id="realms" class="codex-panel" style="display:none">
+    <div class="panel-header" id="realmsPanelHeader" style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center;">
+        <h2 style="margin: 0 16px 0 0;">🗺️ Campaign Zone</h2>
+        <button class="edit-btn" onclick="window.showPanel('add')">Edit</button>
+      </div>
+      <button class="edit-btn" id="addRealmBtn" onclick="window.handleAddClick()" style="display:none;" title="Add">Add</button>
+      <button class="edit-btn" id="collapseAllRealmBtn" onclick="window.toggleRealms()" style="display:none;">Collapse All</button>
     </div>
     <nav>
-      <button onclick="filterZone('core')">Core Quests</button>
-      <button onclick="filterZone('life')">Personal Journey</button>
-      <button onclick="filterZone('all')">All Zones</button>
-      <button onclick="filterZone('ritual')">Daily Ritual</button>
-      <button onclick="filterZone('guild')">Guild Campaigns</button>
-      <button onclick="filterZone('aether')">Aether Archive</button>
+      <button onclick="window.filterRealm('core')">Core Quests</button>
+      <button onclick="window.filterRealm('life')">Personal Journey</button>
+      <button onclick="window.filterRealm('all')">Realms</button>
+      <button onclick="window.filterRealm('ritual')">Daily Ritual</button>
+      <button onclick="window.filterRealm('guild')">Guild Campaigns</button>
     </nav>
-    <section id="zone-view">
-      <main id="zone-container"></main>
+    <div id="realmListPanel">
+      <div id="realmList"></div>
+    </div>
+    <section id="realm-view">
+      <main id="realm-container">
+        <!-- Realm cards will be rendered here -->
+      </main>
     </section>
   </section>
 
@@ -69,7 +73,8 @@
   <section id="achievements" class="codex-panel" style="display:none">
     <div class="panel-header">
       <h2>🏅 Achievements</h2>
-      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+      <button class="edit-btn" onclick="window.showPanel('add')">Edit</button>
+      <button class="edit-btn" id="addAchievementBtn" onclick="window.handleAddAchievement()" style="display:none;" title="Add">Add</button>
     </div>
     <!-- Achievements injected dynamically -->
   </section>
@@ -78,18 +83,10 @@
   <section id="archive" class="codex-panel" style="display:none">
     <div class="panel-header">
       <h2>📚 Lore Archive</h2>
-      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
+      <button class="edit-btn" onclick="window.showPanel('add')">Edit</button>
+      <button class="edit-btn" id="addLoreBtn" onclick="window.handleAddLore()" style="display:none;" title="Add">Add</button>
     </div>
     <!-- Lore entries injected dynamically -->
-  </section>
-
-  <!-- Aether Archive Section -->
-  <section id="aether" class="codex-panel" style="display:none">
-    <div class="panel-header">
-      <h2>🌌 Aether Archive</h2>
-      <button class="edit-btn" onclick="showPanel('add')">Edit</button>
-    </div>
-    <!-- Aether Archive entries will be injected dynamically -->
   </section>
 
   <!-- Lore Section (not in nav, but available for direct add) -->
@@ -99,7 +96,7 @@
       <input type="text" id="loreTitle" placeholder="Title" />
       <textarea id="loreContent" placeholder="Story or notes..."></textarea>
       <input type="text" id="loreTags" placeholder="Tags (comma-separated)" />
-      <button onclick="addLoreEntry()">📝 Save Lore</button>
+      <button onclick="window.addLoreEntry()">📝 Save Lore</button>
     </section>
   </section>
 
@@ -107,7 +104,7 @@
   <section id="add" class="codex-panel" style="display:none">
     <label for="smartInput">Smart Input:</label>
     <textarea id="smartInput" rows="4" placeholder="Paste or type any quest notes here..."></textarea>
-    <button type="button" onclick="processSmartInput()">🧠 Parse Input</button>
+    <button type="button" onclick="window.processSmartInput()">🧠 Parse Input</button>
 
     <!-- 🧠 Suggestion Box -->
     <div id="smartSuggestions" class="suggestion-box" style="display:none;">
@@ -123,13 +120,19 @@
       <textarea id="questDescription"></textarea>
 
       <label for="categoryGroup">Category Group:</label>
-      <select id="categoryGroup" onchange="updateSubcategories()">
+      <select id="categoryGroup" onchange="window.updateSubcategories()">
         <option value="">Select Group...</option>
         <option value="Quest Journal">Quest Journal</option>
-        <option value="Campaign Zones">Campaign Zones</option>
+        <option value="Campaign Zone">Campaign Zone</option>
+        <option value="Realms">Realms</option>
         <option value="Achievements">Achievements</option>
         <option value="Lore Archive">Lore Archive</option>
-        <option value="Aether Archive">Aether Archive</option>
+      </select>
+      <label for="archiveSection">Archive Section:</label>
+      <select id="archiveSection">
+        <option value="">Select Archive...</option>
+        <option value="lore">Lore Archive</option>
+        <option value="aether">Aether Archive</option>
       </select>
 
       <label for="questCategory">Subcategory:</label>
@@ -160,7 +163,7 @@
       </label>
 
       <button type="submit">Save Quest</button>
-      <button type="button" onclick="clearQuestForm()">Cancel</button>
+      <button type="button" onclick="window.clearQuestForm()">Cancel</button>
     </form>
 
     <!-- 🔍 Preview Box -->
@@ -172,12 +175,26 @@
         <div class="quest-controls">
           <span class="priority" id="previewPriority"></span>
           <span id="previewXP"></span>
-          <span id="previewZone"></span>
+          <span id="previewRealm"></span>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Realm Editor Modal -->
+  <div id="realmEditorModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3 id="realmEditorTitle">Add/Edit Realm</h3>
+      <label for="realmTitleInput">Realm Title:</label>
+      <input type="text" id="realmTitleInput" />
+      <div class="modal-actions">
+        <button id="saveRealmBtn">Save</button>
+        <button id="cancelRealmBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JS entry point -->
   <script type="module" src="app.js"></script>
 </body>
 </html>

@@ -1,3 +1,6 @@
+// Renders the Achievements panel and handles achievement unlock logic.
+// Displays badges and achievement cards.
+
 import { calculateXP } from './utils.js';
 
 export async function renderAchievements() {
@@ -10,10 +13,20 @@ export async function renderAchievements() {
   container.appendChild(panel);
 
   try {
-    const res = await fetch('./data/achievements.json');
-    let achievements = await res.json();
+    // Try local first, fallback to fetch
+    let achievements = [];
+    if (localStorage.getItem('codexAchievements')) {
+      achievements = JSON.parse(localStorage.getItem('codexAchievements'));
+    } else {
+      const res = await fetch('data/achievements.json');
+      achievements = await res.json();
+      // Optionally cache for future loads
+      localStorage.setItem('codexAchievements', JSON.stringify(achievements));
+    }
 
-    const totalXP = calculateXP(window.allZones || []);
+    const totalXP = typeof window.calculateXP === 'function'
+      ? window.calculateXP(window.allZones || [])
+      : calculateXP(window.allZones || []);
 
     // Unlock logic
     achievements = achievements.map(item => {
@@ -58,3 +71,6 @@ export async function renderAchievements() {
     console.error('Error loading achievements:', err);
   }
 }
+
+// Expose for debugging if needed
+window.renderAchievements = renderAchievements;

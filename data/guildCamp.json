@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ai-engineering-guild",
+    "type": "guild",
+    "title": "AI Engineering Guild",
+    "description": "Collaborate on AI projects and research.",
+    "active": false,
+    "quests": [
+      {
+        "id": "ai-main-quest",
+        "title": "Main Quest: Build a neural network",
+        "description": "Design and train a basic neural network.",
+        "category": "Main",
+        "xp": 25,
+        "priority": "main",
+        "status": "inactive",
+        "repeatable": false,
+        "completed": false,
+        "active": false,
+        "subQuests": [
+          {
+            "id": "ai-sub-1",
+            "title": "Research neural network architectures",
+            "description": "Read articles and watch videos about neural networks.",
+            "xp": 5,
+            "completed": false,
+            "active": false
+          },
+          {
+            "id": "ai-sub-2",
+            "title": "Implement a simple neural net",
+            "description": "Write code for a basic neural network.",
+            "xp": 10,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "web-design-guild",
+    "type": "guild",
+    "title": "Web Design Guild",
+    "description": "Create and improve web projects.",
+    "active": false,
+    "quests": [
+      {
+        "id": "web-main-quest",
+        "title": "Main Quest: Design a landing page",
+        "description": "Create a modern, responsive landing page.",
+        "category": "Main",
+        "xp": 15,
+        "priority": "main",
+        "status": "inactive",
+        "repeatable": false,
+        "completed": false,
+        "active": false,
+        "subQuests": [
+          {
+            "id": "web-sub-1",
+            "title": "Sketch wireframes",
+            "description": "Draw wireframes for the landing page.",
+            "xp": 5,
+            "completed": false,
+            "active": false
+          },
+          {
+            "id": "web-sub-2",
+            "title": "Code the layout",
+            "description": "Write HTML and CSS for the page.",
+            "xp": 10,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "martial-arts-guild",
+    "type": "guild",
+    "title": "Martial Arts Guild",
+    "description": "Train and improve martial arts skills.",
+    "active": false,
+    "quests": [
+      {
+        "id": "martial-main-quest",
+        "title": "Main Quest: Master a kata",
+        "description": "Practice and perfect a martial arts kata.",
+        "category": "Main",
+        "xp": 20,
+        "priority": "main",
+        "status": "inactive",
+        "repeatable": true,
+        "completed": false,
+        "active": false,
+        "subQuests": [
+          {
+            "id": "martial-sub-1",
+            "title": "Warm up",
+            "description": "Do a 10-minute warm-up.",
+            "xp": 5,
+            "completed": false,
+            "active": false
+          },
+          {
+            "id": "martial-sub-2",
+            "title": "Practice kata",
+            "description": "Perform the kata three times.",
+            "xp": 10,
+            "completed": false,
+            "active": false
+          }
+        ]
+      }
+    ]
+  }
+]

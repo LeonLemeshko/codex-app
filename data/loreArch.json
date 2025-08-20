@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "title": "Guild Reborn",
+      "date": "2025-07-16",
+      "content": "After reconciling zone structures and styling, the Codex shimmered once again with golden parchment and glowing shadows.",
+      "tags": ["Codex", "styling", "breakthrough"],
+      "section": "lore"
+    },
+    {
+      "title": "First Quest Saved",
+      "date": "2025-07-15",
+      "content": "The new Quest Editor form successfully pushed dynamic quests into the system and marked the dawn of modular storytelling.",
+      "tags": ["quest-editor", "modularity", "form"],
+      "section": "lore"
+    },
+    {
+      "title": "Aether Discovery",
+      "date": "2025-08-01",
+      "content": "Aether Archive was unlocked after a mysterious event.",
+      "tags": ["aether", "rare"],
+      "section": "aether"
+    },
+    {
+      "title": "The First Flame",
+      "date": "2025-07-21",
+      "content": "The guild's origin began beneath fractured skies...",
+      "tags": ["origin", "guild", "aether"],
+      "section": "aether"
+    },
+    {
+      "title": "Rise of the Cartographers",
+      "date": "2025-07-22",
+      "content": "They mapped the forgotten ruins with meticulous ink...",
+      "tags": ["mapping", "exploration", "aether"],
+      "section": "aether"
+    }
+  ]
+}

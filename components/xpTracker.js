@@ -1,3 +1,6 @@
+// Renders XP bars and progress indicators for quests and zones.
+// Used for visual feedback on completion and XP.
+
 export function renderXPBar(totalXP, goalXP = 1000) {
   const fillWidth = Math.min((totalXP / goalXP) * 100, 100);
 

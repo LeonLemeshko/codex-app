@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ritual",
+    "type": "core",
+    "title": "Daily Ritual",
+    "description": "Ground yourself and prepare for the day.",
+    "quests": [
+      {
+        "id": "meditate",
+        "title": "Meditate for 5 minutes",
+        "description": "Begin your day with clarity.",
+        "category": "Daily Rituals",
+        "xp": 10,
+        "priority": "daily",
+        "status": "active",
+        "repeatable": true,
+        "completed": false,
+        "active": true,
+        "text": "Meditate for 5 minutes"
+      },
+      {
+        "id": "hydrate",
+        "title": "Drink a full glass of water",
+        "description": "Hydrate and center yourself.",
+        "category": "Daily Rituals",
+        "xp": 5,
+        "priority": "daily",
+        "status": "active",
+        "repeatable": true,
+        "completed": false,
+        "active": true,
+        "text": "Drink a full glass of water"
+      }
+    ]
+  }
+]

@@ -1,3 +1,6 @@
+// Utility functions for XP calculation, quest grouping, ID generation, etc.
+// Shared helpers for quest and zone logic.
+
 // ✅ Calculate total XP
 export function calculateXP(zones) {
   return zones.reduce((totalXP, zone) => {
@@ -46,3 +49,56 @@ export function toggleQuest(zoneId, questId, zones) {
     quest.completed = !quest.completed;
   }
 }
+
+// 📝 Add Personal Journey Objective to Quest Journal
+window.addObjectiveToJournal = function(journeyId, objId) {
+  const journey = window.personalJourneyQuests.find(j => j.id === journeyId);
+  if (!journey) return;
+  const obj = (journey.objectives.active || []).find(o => o.id === objId);
+  if (!obj) return;
+  obj.inJournal = true;
+  obj.progress = obj.progress || 0;
+  window.questJournal = window.questJournal || [];
+  if (!window.questJournal.some(o => o.id === objId)) {
+    window.questJournal.push({
+      ...obj,
+      journeyTitle: journey.title,
+      active: true
+    });
+  }
+  // Optionally persist to localStorage:
+  localStorage.setItem('questJournal', JSON.stringify(window.questJournal));
+  localStorage.setItem('personalJourneyQuests', JSON.stringify(window.personalJourneyQuests));
+};
+
+// 🔄 Restart Personal Journey Objective
+window.restartObjective = function(journeyId, objId) {
+  const journey = window.personalJourneyQuests.find(j => j.id === journeyId);
+  if (!journey) return;
+  const obj = (journey.objectives.active || []).find(o => o.id === objId);
+  if (!obj) return;
+  obj.progress = 0;
+  // Also update in questJournal if present
+  if (window.questJournal) {
+    const journalObj = window.questJournal.find(o => o.id === objId);
+    if (journalObj) journalObj.progress = 0;
+  }
+  localStorage.setItem('questJournal', JSON.stringify(window.questJournal));
+  localStorage.setItem('personalJourneyQuests', JSON.stringify(window.personalJourneyQuests));
+};
+
+// ↩️ Retract Personal Journey Objective from Quest Journal
+window.retractObjectiveFromJournal = function(journeyId, objId) {
+  const journey = window.personalJourneyQuests.find(j => j.id === journeyId);
+  if (!journey) return;
+  const obj = (journey.objectives.active || []).find(o => o.id === objId);
+  if (!obj) return;
+  obj.inJournal = false;
+  // Remove from questJournal
+  if (window.questJournal) {
+    window.questJournal = window.questJournal.filter(o => o.id !== objId);
+  }
+  // Optionally persist to localStorage:
+  localStorage.setItem('questJournal', JSON.stringify(window.questJournal));
+  localStorage.setItem('personalJourneyQuests', JSON.stringify(window.personalJourneyQuests));
+};

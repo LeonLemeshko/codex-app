@@ -1,4 +1,4 @@
-/* Base Typography */
+/* --- BASE TYPOGRAPHY --- */
 html {
   font-size: 16px;
 }
@@ -10,7 +10,7 @@ body {
   padding: 0;
 }
 
-/* Header */
+/* --- HEADER STYLES --- */
 header {
   background-color: #2b2b2b;
   padding: 1rem;
@@ -18,7 +18,7 @@ header {
   border-bottom: 1px solid #444;
 }
 
-/* Panels */
+/* --- PANEL STYLES --- */
 .codex-panel {
   margin: 1rem;
   padding: 1rem;
@@ -41,7 +41,25 @@ header {
   visibility: hidden !important;
 }
 
-/* Ensure nav buttons in archive/lore panels are always clickable and above overlays */
+/* --- LORE ARCHIVE STYLES --- */
+.archive-separator {
+  margin: 2.5em 0 1em 0;
+  text-align: left;
+}
+.aether-header {
+  color: #ffe066;
+  font-size: 1.3em;
+  letter-spacing: 1px;
+  margin-top: 1.2 em;
+}
+.aether-entry {
+  background: #23232b;
+  border: 2px solid #ffe066;
+  box-shadow: 0 2px 8px rgba(255, 224, 102, 0.08);
+  padding: 1rem;
+}
+
+/* --- NAV BUTTONS FOR ARCHIVE/LORE PANELS --- */
 #archive nav button,
 #lorePanel nav button,
 #loreEditor nav button {
@@ -53,7 +71,7 @@ header {
   opacity: 1 !important;
 }
 
-/* Filter Buttons */
+/* --- FILTER BUTTONS --- */
 section nav button,
 #archive nav button,
 #lorePanel nav button,
@@ -69,6 +87,7 @@ section nav button,
   transition: background 0.3s, color 0.2s, border-color 0.2s;
 }
 
+/* Selected and hover states for nav/filter buttons */
 section nav button.selected,
 #archive nav button.selected,
 #lorePanel nav button.selected,
@@ -78,24 +97,13 @@ section nav button:focus {
   color: white;
   border-color: #d4af37;
 }
-
 section nav button:hover:not(.selected) {
   background-color: #353b47;
   color: #ffe082;
   border-color: #ffe082;
 }
 
-/* Fix: Ensure archive/lore nav buttons get selected styling */
-#archive nav button.selected,
-#lorePanel nav button.selected,
-#loreEditor nav button.selected {
-  background-color: #8a6239;
-  color: white;
-  border: 2px solid #d4af37;
-  font-weight: 600;
-}
-
-/* Quest States */
+/* --- QUEST STATE STYLES --- */
 .completed {
   color: #888;
   text-decoration: line-through;
@@ -112,7 +120,7 @@ section nav button:hover:not(.selected) {
   font-weight: 500;
 }
 
-/* Quest Cards */
+/* --- QUEST CARD STYLES --- */
 .quest-list {
   list-style: none;
   padding: 0;
@@ -149,7 +157,7 @@ section nav button:hover:not(.selected) {
   align-items: center;
 }
 
-/* Buttons & Selects */
+/* --- BUTTONS & SELECTS --- */
 button,
 select {
   height: 2.2rem;
@@ -169,7 +177,7 @@ button.toggle-active {
   cursor: pointer;
 }
 
-/* Repeatable Tag */
+/* --- REPEATABLE TAG --- */
 .repeatable {
   display: inline-block;
   width: 24px;
@@ -184,7 +192,7 @@ button.toggle-active {
   margin-left: 8px;
 }
 
-/* Priority Tag */
+/* --- PRIORITY TAG --- */
 .priority {
   font-size: 0.75rem;
   padding: 2px 6px;
@@ -195,7 +203,7 @@ button.toggle-active {
   margin-left: 6px;
 }
 
-/* Zone Cards */
+/* --- ZONE CARD STYLES --- */
 .zone-card,
 .life-zone {
   background-color: #2a2a2a;
@@ -243,7 +251,41 @@ button.toggle-active {
   margin-bottom: 0.5rem;
 }
 
-/* Reward Box */
+.zone-list-item {
+  background: #181a20;
+  color: #fff;
+  border-radius: 6px;
+  margin: 8px 0;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1rem;
+}
+
+.zone-list-item strong {
+  font-size: 1.1em;
+  margin-right: 12px;
+}
+
+.zone-list-item button {
+  margin-left: 8px;
+  background: #222;
+  color: #ffd700;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.zone-list-item button:hover {
+  background: #333;
+}
+
+/* --- REWARD BOX --- */
 .reward-box {
   background: #333;
   padding: 0.75rem;
@@ -254,13 +296,14 @@ button.toggle-active {
   border-top: 1px solid #555;
 }
 
-/* Progress Bars */
+/* --- PROGRESS BAR STYLES --- */
 .progress-bar {
+  display: inline-block;
   height: 8px;
-  background: #333;
+  background: #4caf50;
   border-radius: 4px;
-  margin: 0.5rem 0;
-  overflow: hidden;
+  min-width: 40px;
+  max-width: 100px;
 }
 .progress-fill {
   height: 100%;
@@ -286,7 +329,7 @@ button.toggle-active {
   margin-left: 1rem;
 }
 
-/* Achievements */
+/* --- ACHIEVEMENTS PANEL --- */
 .achievement-card {
   background: #282828;
   padding: 1rem;
@@ -304,7 +347,7 @@ button.toggle-active {
   margin-right: 0.5rem;
 }
 
-/* Section Breaks */
+/* --- SECTION BREAKS --- */
 .zone-break {
   border-top: 2px solid #555;
   margin: 2rem 0 1rem;
@@ -313,11 +356,11 @@ button.toggle-active {
 }
 .zone-break.glow {
   border-top: 2px solid #d4af37;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 6px rgba(212,175,55,0.4);
   opacity: 0.8;
 }
 
-/* Tags */
+/* --- TAGS --- */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -332,7 +375,7 @@ button.toggle-active {
   border-radius: 4px;
 }
 
-/* Add/Edit Tab */
+/* --- ADD/EDIT TAB --- */
 #add {
   padding: 2rem;
   background-color: #1c1c1c;
@@ -384,21 +427,21 @@ button.toggle-active {
   background-color: #a67c52;
 }
 
-/* main.css */
+/* --- INACTIVE QUEST CARD --- */
 .quest-card.inactive {
   opacity: 0.5;
   filter: grayscale(0.7);
   pointer-events: auto;
 }
 
-/* Utility */
+/* --- UTILITY/FALLBACK --- */
 .fallback {
   color: #999;
   font-style: italic;
   margin-top: 1rem;
 }
 
-/* Responsive Layout */
+/* --- RESPONSIVE LAYOUT --- */
 @media (max-width: 768px) {
   .tab-nav {
     flex-direction: column;
@@ -426,6 +469,7 @@ button.toggle-active {
   }
 }
 
+/* --- ZONE PROGRESS LABEL --- */
 .zone-progress-label {
   font-size: 0.85rem;
   color: #d4af37;
@@ -433,6 +477,7 @@ button.toggle-active {
   margin-left: 1rem;
 }
 
+/* --- LEGEND KEY --- */
 .legend-key {
   display: flex;
   flex-wrap: wrap;
@@ -442,25 +487,24 @@ button.toggle-active {
   color: #f0e6d2;
   align-items: center;
 }
-
 .legend-key span {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
+/* --- STATUS ICONS --- */
 .status-icon {
   font-size: 1rem;
 }
-
 .active-icon {
   color: #4caf50;
 }
-
 .inactive-icon {
   color: #555;
 }
 
+/* --- LOGO STYLES --- */
 .codex-logo {
   display: flex;
   align-items: center;
@@ -470,17 +514,16 @@ button.toggle-active {
   color: #d4af37;
   margin-bottom: 0.5rem;
 }
-
 .logo-symbol {
   font-size: 2rem;
 }
-
 .logo-text {
   font-family: 'Georgia', serif;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
+/* --- ZONE CARD (DUPLICATE, FOR CONSISTENCY) --- */
 .zone-card {
   margin-bottom: 2.5rem;
   padding: 1.25rem;
@@ -488,7 +531,6 @@ button.toggle-active {
   background-color: #2a2a2a;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
-
 .zone-card h4 {
   margin-bottom: 0.25rem;
   font-size: 1.25rem;
@@ -497,7 +539,6 @@ button.toggle-active {
   justify-content: space-between;
   align-items: center;
 }
-
 .zone-card h5 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
@@ -505,7 +546,6 @@ button.toggle-active {
   color: #f0e6d2;
   position: relative;
 }
-
 .zone-card h5::before {
   content: '';
   display: block;
@@ -514,12 +554,12 @@ button.toggle-active {
   margin-bottom: 0.5rem;
 }
 
+/* --- COLLAPSIBLE HEADERS --- */
 .collapsible-header {
   cursor: pointer;
   font-weight: bold;
   position: relative;
 }
-
 .collapsible-header::after {
   content: '▼';
   font-size: 0.8rem;
@@ -527,15 +567,14 @@ button.toggle-active {
   color: #d4af37;
   transition: transform 0.2s ease;
 }
-
 .quest-list.collapsed {
   display: none;
 }
-
 .collapsible-header.open::after {
   transform: rotate(180deg);
 }
 
+/* --- SMART INPUT STYLES --- */
 #smartInput {
   width: 100%;
   font-family: 'Courier New', monospace;
@@ -547,14 +586,12 @@ button.toggle-active {
   resize: vertical;
   border-radius: 4px;
 }
-
 #add label[for="smartInput"] {
   font-weight: bold;
   color: #d4af37;
   display: block;
   margin-top: 1rem;
 }
-
 #add button[onclick="processSmartInput()"] {
   display: block;
   margin-left: auto;
@@ -568,6 +605,7 @@ button.toggle-active {
   border-radius: 4px;
 }
 
+/* --- SUGGESTION BOX --- */
 .suggestion-box {
   background-color: #1c1c1c;
   border: 1px solid #444;
@@ -575,29 +613,28 @@ button.toggle-active {
   border-radius: 6px;
   margin-bottom: 1rem;
 }
-
 .suggestion-box h4 {
   color: #d4af37;
   margin-bottom: 0.5rem;
 }
-
 .suggestion-box ul {
   list-style: disc;
   padding-left: 1.25rem;
   color: #f0e6d2;
   font-size: 0.95rem;
 }
-
 .suggestion-box li {
   margin-bottom: 0.3rem;
 }
 
+/* --- COMPLETED QUEST CARD --- */
 .quest-card.completed {
   opacity: 0.6;
   text-decoration: line-through;
   background-color: #f0f0f0;
 }
 
+/* --- LORE ENTRY STYLES --- */
 .lore-entry {
   margin-bottom: 1.5em;
   padding: 1em 1.2em;
@@ -611,31 +648,28 @@ button.toggle-active {
 .lore-entry:hover {
   background: #181817;
 }
-
 .lore-entry h4 {
   margin: 0 0 0.2em;
   font-size: 1.25em;
   color: #5a3b00;
 }
-
 .lore-entry small {
   display: block;
   margin-bottom: 0.5em;
   color: #6d6d6d;
   font-size: 0.85em;
 }
-
 .lore-entry p {
   margin: 0.3em 0;
   line-height: 1.4;
   color: #f9f6ec;
 }
-
 .lore-entry em {
   font-style: italic;
   color: #946d00;
 }
 
+/* --- LORE EDITOR --- */
 #loreEditor {
   margin-bottom: 2em;
   padding: 1em;
@@ -647,13 +681,11 @@ button.toggle-active {
   pointer-events: auto; /* Always allow interaction */
   overflow: visible; /* Prevent clipping of children */
 }
-
 #loreEditor h4 {
   margin-top: 0;
   font-size: 1.1em;
   color: #5a4600;
 }
-
 #loreEditor input,
 #loreEditor textarea {
   display: block;
@@ -664,7 +696,6 @@ button.toggle-active {
   border-radius: 4px;
   font-size: 1em;
 }
-
 #loreEditor button {
   background: #c8a344;
   color: white;
@@ -678,17 +709,18 @@ button.toggle-active {
   position: relative;
   pointer-events: auto;
 }
-
 #loreEditor button:hover {
   background: #a78430;
 }
 
+/* --- LORE PANEL --- */
 #lorePanel {
   margin-top: 1em;
   position: relative;
   z-index: 5;
 }
 
+/* --- TAB NAVIGATION --- */
 .tab-nav {
   display: flex;
   flex-wrap: wrap;
@@ -730,12 +762,10 @@ button.toggle-active {
   padding: 0.75rem;
   border-radius: 8px 8px 0 0;
 }
-
 .nav-group {
   display: flex;
   gap: 0.5em;
 }
-
 .tab-nav button {
   background: #23272f;
   color: #f0e6d2;
@@ -755,7 +785,6 @@ button.toggle-active {
   justify-content: center;
   min-width: 160px; /* Optional: makes all buttons same width */
 }
-
 .tab-nav button.selected,
 .tab-nav button:focus {
   background: #d4af37;
@@ -763,13 +792,11 @@ button.toggle-active {
   border-color: #d4af37;
   box-shadow: 0 2px 8px rgba(212,175,55,0.15);
 }
-
 .tab-nav button:hover:not(.selected) {
   background: #353b47;
   color: #ffe082;
   border-color: #ffe082;
 }
-
 .tab-nav button:active {
   outline: none;
   box-shadow: 0 2px 8px rgba(212,175,55,0.15);
@@ -787,13 +814,13 @@ button.toggle-active {
   transition: box-shadow 0.2s;
 }
 
+/* --- PANEL HEADER --- */
 .panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.2em;
 }
-
 .edit-btn {
   background: #d4af37;
   color: #23272f;
@@ -829,4 +856,57 @@ button.toggle-active {
     align-items: flex-start;
     gap: 0.5em;
   }
+}
+
+/* --- ADD TO JOURNAL BUTTON --- */
+.add-to-journal {
+  margin-left: 8px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+/* --- ACTIVE OBJECTIVE LIST ITEM --- */
+li.active {
+  margin-bottom: 10px;
+}
+
+/* --- PENDING BADGE --- */
+.pending-badge {
+  margin-left: 8px;
+  color: #b8860b;
+  font-weight: bold;
+  font-size: 0.95em;
+}
+.progress-tracker {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+.progress-bar {
+  display: inline-block;
+  height: 8px;
+  background: #4caf50;
+  border-radius: 4px;
+  min-width: 40px;
+  max-width: 100px;
+}
+.progress-label {
+  margin-left: 6px;
+  font-size: 0.9em;
+  color: #333;
+}
+.retract-quest, .restart-quest {
+  margin-left: 10px;
+  font-size: 0.95em;
+  background: #f5f5f5;
+  color: #222;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.retract-quest:hover, .restart-quest:hover {
+  background: #e0e0e0;
 }
